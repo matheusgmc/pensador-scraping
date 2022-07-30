@@ -1,34 +1,36 @@
 {
-  "name": "pensador-scraping",
-  "version": "1.0.0",
-  "description": "biblioteca que ira fazer webscraping no site pensador.",
-  "main": "dist/index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/matheusgmc/pensador-scraping.git"
-  },
-  "keywords": [
-    "pensador",
-    "node",
-    "webscraping",
-    "frases",
-    "poesia"
-  ],
-  "author": "Matheus Geraldo <matheus.geraldo1@outlook.com>",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/matheusgmc/pensador-scraping/issues"
-  },
-  "homepage": "https://github.com/matheusgmc/pensador-scraping#readme",
-  "dependencies": {
-    "axios": "^0.27.2",
-    "cheerio": "^1.0.0-rc.12"
-  },
-  "devDependencies": {
-    "@types/axios": "^0.14.0",
-    "typescript": "^4.7.4"
-  }
+	"name": "pensador-scraping",
+	"version": "1.0.0",
+	"description": "biblioteca que ira fazer webscraping no site pensador.",
+	"main": "dist/index.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"prettier": "prettier --write ."
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/matheusgmc/pensador-scraping.git"
+	},
+	"keywords": [
+		"pensador",
+		"node",
+		"webscraping",
+		"frases",
+		"poesia"
+	],
+	"author": "Matheus Geraldo <matheus.geraldo1@outlook.com>",
+	"license": "MIT",
+	"bugs": {
+		"url": "https://github.com/matheusgmc/pensador-scraping/issues"
+	},
+	"homepage": "https://github.com/matheusgmc/pensador-scraping#readme",
+	"dependencies": {
+		"axios": "^0.27.2",
+		"cheerio": "^1.0.0-rc.12"
+	},
+	"devDependencies": {
+		"@types/axios": "^0.14.0",
+		"prettier": "^2.7.1",
+		"typescript": "^4.7.4"
+	}
 }
