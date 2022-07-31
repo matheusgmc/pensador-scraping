@@ -30,7 +30,6 @@ export class Scraping {
 			})
 			.toArray();
 		return {
-			author: data.length >= 1 ? data[0].author : "",
 			thought: data,
 			total: data.length,
 		};
@@ -39,21 +38,38 @@ export class Scraping {
 	authorScrap(html: string): IResponseWebScrapingAuthor {
 		const $ = load(html);
 		const content = $("div.row").find("#content");
-		const name = content.find(".title").text().trim();
-		const thought_total = content
-			.find(".description > strong")
+		const resumo = $("div.row").find(".resumo");
+		const top = content.find(".top");
+		const name = top.find(".title").text().trim();
+		const tags = top.find(".tagline").text().trim();
+
+		const thought_total_text = content
+			.find(".description")
 			.last()
 			.text()
-			.trim();
-		const info = $("div.row").find(".resumo").text().trim();
+			.trim()
+			.replace("\n", "");
+
+		const thought_total = thought_total_text
+			.replace(/[a-z]+|\:|-\\n|[!@#\\$%\\^\\&*\\)\\(+=._-]/gim, "")
+			.replace(/\s+/gim, " ")
+			.split(" ")
+			.filter(e => e)
+			.pop();
+
+		const info = resumo.text().trim();
+		const href = resumo.find("a").attr("href");
+
 		const associated = $("div.row > .sidebar > .list-boxed > .list-item > a")
 			.map((i, e) => this.formatUrl($(e).attr("href")))
 			.toArray();
 		return {
 			name,
-			thought_total: Number(thought_total) || 0,
+			thought_total: thought_total ? Number(thought_total) : 0,
 			info,
 			associated,
+			bio: this.formatUrl(href),
+			tags,
 		};
 	}
 
