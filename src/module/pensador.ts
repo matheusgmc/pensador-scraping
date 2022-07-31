@@ -1,8 +1,8 @@
 import { AxiosInstance } from "axios";
-import { IResponsePensador } from "../@types/pensador";
+import { IResponsePensador, PensadorFetch } from "pescador-scraping-types";
 import Utils from "../utils/";
 
-export class Pensador {
+export class Pensador implements PensadorFetch {
 	constructor(private router: AxiosInstance) {}
 
 	async searchWord(q: string): Promise<IResponsePensador> {
