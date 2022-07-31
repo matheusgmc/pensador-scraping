@@ -39,4 +39,18 @@ export class Pensador {
 			return { err: error.message };
 		}
 	}
+
+	async getBio(author: string): Promise<IResponsePensador> {
+		try {
+			if (!author || Utils.checkString(author)) {
+				throw new Error("essa query não é válido.");
+			}
+			const { data } = await this.router(
+				`/autor/${author.toLowerCase().replace(" ", "_")}/biografia`
+			);
+			return { html: data };
+		} catch (error: any) {
+			return { err: error.message };
+		}
+	}
 }
