@@ -5,6 +5,10 @@ describe("Pensador - Scraping", () => {
 		query: "elon musk",
 	};
 
+	const propsWord = {
+		query: "frases",
+	};
+
 	const propsFail = {
 		query: "null",
 	};
@@ -13,8 +17,8 @@ describe("Pensador - Scraping", () => {
 
 	describe("Search", () => {
 		it("deveria retorna uma item com sucesso porem limitado a 1 resultado de pensamento.", async () => {
-			const { author, thought, total } = await suit.search(props);
-			expect(author.toLowerCase()).toBe("elon musk");
+			const { query, thought, total } = await suit.search(props);
+			expect(query.toLowerCase()).toBe("elon musk");
 			expect(total).toBe(1);
 			expect(thought[0]).toHaveProperty("author", "Elon Musk");
 			expect(thought[0]).not.toHaveProperty("content", "");
@@ -22,10 +26,19 @@ describe("Pensador - Scraping", () => {
 		});
 
 		it("deveria retorna um item com sucesso porem com nenhum resultado de pensamento.", async () => {
-			const { author, thought, total } = await suit.search(propsFail);
-			expect(author.toLowerCase()).toBe("");
+			const { query, thought, total } = await suit.search(propsFail);
+			expect(query.toLowerCase()).toBe(propsFail.query);
 			expect(total).toBe(0);
 			expect(thought).toHaveLength(0);
+		});
+	});
+
+	describe("Search Word", () => {
+		it("deveria retorna um item com sucesso porem limitado a 1 resultado de pensamento.", async () => {
+			const { query, thought, total } = await suit.searchWord(propsWord);
+			expect(query).toBe(propsWord.query);
+			expect(thought.length).toBeGreaterThanOrEqual(1);
+			expect(total).toBeGreaterThanOrEqual(1);
 		});
 	});
 
@@ -53,7 +66,7 @@ describe("Pensador - Scraping", () => {
 	});
 
 	describe("Ranking Authors", () => {
-		it("deveria obeter com sucesso as lista dos top 9 do site", async () => {
+		it("deveria obter com sucesso as lista dos top 9 do site", async () => {
 			const data = await suit.rankingAuthors();
 			expect(data).toHaveLength(9);
 			data.forEach((item, i) => {
