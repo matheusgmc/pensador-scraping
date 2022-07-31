@@ -43,7 +43,7 @@ class PensadorScraping {
 	}
 
 	async rankingAuthors(): Promise<IResponseWebScrapingRakingAuthors[]> {
-		const { err, html } = await this.pensador.getTopAuthors();
+		const { err, html } = await this.pensador.getHome();
 		if (err) {
 			throw new Error(err);
 		}

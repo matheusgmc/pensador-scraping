@@ -26,7 +26,7 @@ export class Pensador {
 		}
 	}
 
-	async getTopAuthors(): Promise<IResponsePensador> {
+	async getHome(): Promise<IResponsePensador> {
 		try {
 			const { data } = await this.router("/");
 			return { html: data };
