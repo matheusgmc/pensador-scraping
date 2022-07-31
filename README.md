@@ -8,3 +8,4 @@
 - Fazer busca no site e retorna uma lista de pensamentos, podendo limitar a quantidade dos resultados.
 - Buscar informações de um determinado autor.
 - Buscar os Top 9 Autores do site.
+- Obter a biografia de um autor.
