@@ -77,6 +77,31 @@ describe("Pensador - Scraping", () => {
 		});
 	});
 
+	describe("Biography Author", () => {
+		it("deveria obter as informações do autor com sucesso.", async () => {
+			const { sucess } = await suit.bioAuthor({
+				query: "William Shakespeare",
+			});
+			expect(sucess?.name.toLowerCase()).toBe("william shakespeare");
+			expect(sucess?.title.toLowerCase()).toBe(
+				"biografia de william shakespeare"
+			);
+
+			expect(sucess?.associated.length).toBeGreaterThanOrEqual(1);
+			expect(sucess?.href).toBe(
+				"https://www.pensador.com/autor/william_shakespeare/biografia/"
+			);
+		});
+		it("deveria falhar ao não encontra um autor.", async () => {
+			const { error } = await suit.aboutAuthor(propsWord);
+			expect(error).toContain("não é um autor.");
+		});
+		it("deveria obter nenhuma informações do autor.", async () => {
+			const { error } = await suit.aboutAuthor(propsFail);
+			expect(error).toBe("essa query não é válido.");
+		});
+	});
+
 	describe("Ranking Authors", () => {
 		it("deveria obter com sucesso as lista dos top 9 do site", async () => {
 			const { sucess } = await suit.rankingAuthors();
