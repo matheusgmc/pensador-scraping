@@ -1,11 +1,10 @@
 import { Scraping } from "./module/web-scraping";
 import { Pensador } from "./module/pensador";
 import FetchPensador from "./services/fetch";
-import { IPensador } from "./@types";
+import { IPensador, IResponse, IResponseSearch } from "./@types";
 import {
 	IResponseWebScrapingAuthor,
 	IResponseWebScrapingRakingAuthors,
-	IResponseWebScrapingThought,
 } from "./@types/web-scraping";
 class PensadorScraping {
 	private scraping = new Scraping();
@@ -15,34 +14,51 @@ class PensadorScraping {
 	async search({
 		limit = 1,
 		query,
-	}: IPensador): Promise<IResponseWebScrapingThought> {
-		const { err, html } = await this.pensador.search(query);
+	}: IPensador): Promise<IResponse<IResponseSearch>> {
+		const { err, html } = await this.pensador.searchWord(query);
 		if (err) {
-			throw new Error(err);
+			return { error: err };
 		}
 		if (!html) {
-			throw new Error("html vazio");
+			return { error: "html vázio" };
 		}
 
-		const result = this.scraping.searchScrap(html, limit);
-		return result;
+		const { thought, total } = this.scraping.searchScrap(html, limit);
+		const author = this.scraping.authorScrap(html);
+		return {
+			sucess: {
+				author,
+				thought,
+				query,
+				total,
+			},
+		};
 	}
 
 	async aboutAuthor({
 		query,
-	}: Omit<IPensador, "limit">): Promise<IResponseWebScrapingAuthor> {
+	}: Omit<IPensador, "limit">): Promise<IResponse<IResponseWebScrapingAuthor>> {
 		const { err, html } = await this.pensador.getAuthor(query);
 		if (err) {
-			throw new Error(err);
+			return { error: err };
 		}
 		if (!html) {
 			throw new Error("html vazio");
 		}
+
 		const result = this.scraping.authorScrap(html);
-		return result;
+		if (!result.info) {
+			return { error: `${query} não é um autor.` };
+		}
+
+		return {
+			sucess: result,
+		};
 	}
 
-	async rankingAuthors(): Promise<IResponseWebScrapingRakingAuthors[]> {
+	async rankingAuthors(): Promise<
+		IResponse<IResponseWebScrapingRakingAuthors[]>
+	> {
 		const { err, html } = await this.pensador.getHome();
 		if (err) {
 			throw new Error(err);
@@ -51,7 +67,9 @@ class PensadorScraping {
 			throw new Error("html vazio");
 		}
 		const result = this.scraping.rakingAuthorsScrap(html);
-		return result;
+		return {
+			sucess: result,
+		};
 	}
 }
 
