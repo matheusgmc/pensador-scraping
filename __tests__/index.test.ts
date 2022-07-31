@@ -13,7 +13,7 @@ describe("Pensador - Scraping", () => {
 		query: "null",
 	};
 
-	const suit = new PensadorScraping();
+	const suit = PensadorScraping;
 
 	describe("Search", () => {
 		it("deveria retorna uma item com sucesso porem limitado a 1 resultado de pensamento.", async () => {
