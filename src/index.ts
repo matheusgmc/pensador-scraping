@@ -4,6 +4,7 @@ import FetchPensador from "./services/fetch";
 import { IPensador, IResponse, IResponseSearch } from "./@types";
 import {
 	IResponseWebScrapingAuthor,
+	IResponseWebScrapingBioAuthor,
 	IResponseWebScrapingRakingAuthors,
 } from "./@types/web-scraping";
 class PensadorScraping {
@@ -51,6 +52,25 @@ class PensadorScraping {
 			return { error: `${query} não é um autor.` };
 		}
 
+		return {
+			sucess: result,
+		};
+	}
+
+	async bioAuthor({
+		query,
+	}: Omit<IPensador, "limit">): Promise<
+		IResponse<IResponseWebScrapingBioAuthor>
+	> {
+		const { err, html } = await this.pensador.getBio(query);
+		if (err) {
+			return { error: err };
+		}
+		if (!html) {
+			throw new Error("html vazio");
+		}
+
+		const result = this.scraping.bioAuthorsScrap(html);
 		return {
 			sucess: result,
 		};
