@@ -71,7 +71,7 @@ describe("Pensador - Scraping", () => {
 			const { error } = await suit.aboutAuthor(propsWord);
 			expect(error).toContain("não é um autor.");
 		});
-		it("deveria obter nenhuma informações do autor.", async () => {
+		it("deveria falhar se a query é inválida.", async () => {
 			const { error } = await suit.aboutAuthor(propsFail);
 			expect(error).toBe("essa query não é válido.");
 		});
@@ -86,18 +86,11 @@ describe("Pensador - Scraping", () => {
 			expect(sucess?.title.toLowerCase()).toBe(
 				"biografia de william shakespeare"
 			);
-
+			expect(sucess?.content.length).toBeGreaterThanOrEqual(1);
 			expect(sucess?.associated.length).toBeGreaterThanOrEqual(1);
-			expect(sucess?.href).toBe(
-				"https://www.pensador.com/autor/william_shakespeare/biografia/"
-			);
 		});
-		it("deveria falhar ao não encontra um autor.", async () => {
-			const { error } = await suit.aboutAuthor(propsWord);
-			expect(error).toContain("não é um autor.");
-		});
-		it("deveria obter nenhuma informações do autor.", async () => {
-			const { error } = await suit.aboutAuthor(propsFail);
+		it("deveria falhar se a query é inválida.", async () => {
+			const { error } = await suit.bioAuthor(propsFail);
 			expect(error).toBe("essa query não é válido.");
 		});
 	});
