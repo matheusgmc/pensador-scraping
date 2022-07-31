@@ -4,7 +4,6 @@ import { Thought } from "../entities/thought";
 
 export interface IResponseWebScrapingThought {
 	total: number;
-	author: string;
 	thought: Thought[];
 }
 
