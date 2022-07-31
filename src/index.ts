@@ -24,7 +24,7 @@ class PensadorScraping {
 			throw new Error("html vazio");
 		}
 
-		const result = this.scraping.searchQuery(html, limit);
+		const result = this.scraping.searchScrap(html, limit);
 		return result;
 	}
 
@@ -38,7 +38,7 @@ class PensadorScraping {
 		if (!html) {
 			throw new Error("html vazio");
 		}
-		const result = this.scraping.authorDetail(html);
+		const result = this.scraping.authorScrap(html);
 		return result;
 	}
 
@@ -50,7 +50,7 @@ class PensadorScraping {
 		if (!html) {
 			throw new Error("html vazio");
 		}
-		const result = this.scraping.rakingAuthors(html);
+		const result = this.scraping.rakingAuthorsScrap(html);
 		return result;
 	}
 }

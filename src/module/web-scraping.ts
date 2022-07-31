@@ -10,7 +10,7 @@ import { Thought } from "../entities/thought";
 export class Scraping {
 	constructor() {}
 
-	searchQuery(html: string, limit: number): IResponseWebScrapingThought {
+	searchScrap(html: string, limit: number): IResponseWebScrapingThought {
 		const $ = load(html);
 		const data = $("div.thought-card.mb-20")
 			.slice(0, limit)
@@ -36,7 +36,7 @@ export class Scraping {
 		};
 	}
 
-	authorDetail(html: string): IResponseWebScrapingAuthor {
+	authorScrap(html: string): IResponseWebScrapingAuthor {
 		const $ = load(html);
 		const content = $("div.row").find("#content");
 		const name = content.find(".title").text().trim();
@@ -57,7 +57,7 @@ export class Scraping {
 		};
 	}
 
-	rakingAuthors(html: string): IResponseWebScrapingRakingAuthors[] {
+	rakingAuthorsScrap(html: string): IResponseWebScrapingRakingAuthors[] {
 		const $ = load(html);
 
 		const data = $("#topautores > ul > li >")
