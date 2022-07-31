@@ -63,6 +63,8 @@ describe("Pensador - Scraping", () => {
 			expect(sucess?.bio).not.toBeUndefined();
 			expect(sucess?.tags).not.toBeUndefined();
 
+			expect(sucess?.avatar_url).not.toBe("");
+
 			expect(sucess?.info).not.toBe("");
 			expect(sucess?.bio).not.toBe("");
 			expect(sucess?.tags).not.toBe("");
