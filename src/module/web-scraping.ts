@@ -1,10 +1,12 @@
-import { load } from "cheerio";
+import { Cheerio, CheerioAPI, Element, load } from "cheerio";
 import {
 	IResponseWebScrapingAuthor,
+	IResponseWebScrapingBioAuthor,
 	IResponseWebScrapingRakingAuthors,
 	IResponseWebScrapingThought,
 } from "../@types/web-scraping";
 import { configDefault } from "../config/config_default";
+import { Content } from "../entities/content";
 import { Thought } from "../entities/thought";
 
 export class Scraping {
@@ -37,38 +39,21 @@ export class Scraping {
 
 	authorScrap(html: string): IResponseWebScrapingAuthor {
 		const $ = load(html);
-		const content = $("div.row").find("#content");
-		const resumo = $("div.row").find(".resumo");
-		const top = content.find(".top");
-		const name = top.find(".title").text().trim();
-		const tags = top.find(".tagline").text().trim();
+		const name = this.scrapName($);
+		const tags = this.scrapTags($);
 
-		const thought_total_text = content
-			.find(".description")
-			.last()
-			.text()
-			.trim()
-			.replace("\n", "");
+		const thought_total = this.splitThoughtTotalNumber($);
 
-		const thought_total = thought_total_text
-			.replace(/[a-z]+|\:|-\\n|[!@#\\$%\\^\\&*\\)\\(+=._-]/gim, "")
-			.replace(/\s+/gim, " ")
-			.split(" ")
-			.filter(e => e)
-			.pop();
-
-		const info = resumo.text().trim();
-		const href = resumo.find("a").attr("href");
-
-		const associated = $("div.row > .sidebar > .list-boxed > .list-item > a")
-			.map((i, e) => this.formatUrl($(e).attr("href")))
-			.toArray();
+		const info = this.scrapInfo($);
+		const bio = this.scrapHrefBio($);
+		const associated = this.scrapAssociated($);
 		return {
 			name,
 			thought_total: thought_total ? Number(thought_total) : 0,
+			avatar_url: "",
 			info,
 			associated,
-			bio: this.formatUrl(href),
+			bio,
 			tags,
 		};
 	}
@@ -89,6 +74,83 @@ export class Scraping {
 			.toArray();
 
 		return data;
+	}
+
+	bioAuthorsScrap(html: string): IResponseWebScrapingBioAuthor {
+		const $ = load(html);
+		const title = this.scrapName($);
+		const content = this.scrapContent($);
+		const associated = this.scrapAssociated($);
+		return {
+			associated,
+			content,
+			name: content[0].paragraph,
+			title,
+		};
+	}
+
+	private scrapName($: CheerioAPI): string {
+		return $("div.row > #content > .top").find(".title").text().trim();
+	}
+
+	private scrapTags($: CheerioAPI): string {
+		return $("div.row > #content > .top").find(".tagline").text().trim();
+	}
+
+	private scrapAssociated($: CheerioAPI): string[] {
+		return $("div.row > .sidebar > .list-boxed > .list-item > a")
+			.map((i, e) => this.formatUrl($(e).attr("href")))
+			.toArray();
+	}
+
+	private scrapHrefBio($: CheerioAPI): string {
+		const href = $("div.row")
+			.find(".resumo > .clearfix > a")
+			.first()
+			.attr("href");
+		return href ? this.formatUrl(href) : "";
+	}
+
+	private scrapContent($: CheerioAPI): Content[] {
+		const data: Content[] = [];
+		$("div.row > #content > #texto")
+			.children()
+			.each((i, e) => {
+				const item = $(e).text().trim();
+				if (data.length == 0 || e.name == "h2") {
+					data.push({
+						content: [],
+						paragraph: item,
+					});
+					return;
+				}
+
+				data[data.length - 1].content.push(item);
+			});
+		return data;
+	}
+
+	private scrapInfo($: CheerioAPI): string {
+		return $("div.row").find(".resumo").text().trim();
+	}
+
+	private scrapThought($: CheerioAPI): string {
+		return $("div.row > #content")
+			.find(".description")
+			.last()
+			.text()
+			.trim()
+			.replace("\n", "");
+	}
+
+	private splitThoughtTotalNumber($: CheerioAPI): number {
+		const number = this.scrapThought($)
+			.replace(/[a-z]+|\:|-\\n|[!@#\\$%\\^\\&*\\)\\(+=._-]/gim, "")
+			.replace(/\s+/gim, " ")
+			.split(" ")
+			.filter(e => e)
+			.pop();
+		return Number(number);
 	}
 
 	private formatUrl(href?: string) {
