@@ -47,10 +47,13 @@ export class Scraping {
 		const info = this.scrapInfo($);
 		const bio = this.scrapHrefBio($);
 		const associated = this.scrapAssociated($);
+
+		const avatar_url = this.scrapAvatar_Url($);
+
 		return {
 			name,
 			thought_total: thought_total ? Number(thought_total) : 0,
-			avatar_url: "",
+			avatar_url,
 			info,
 			associated,
 			bio,
@@ -101,6 +104,10 @@ export class Scraping {
 		return $("div.row > .sidebar > .list-boxed > .list-item > a")
 			.map((i, e) => this.formatUrl($(e).attr("href")))
 			.toArray();
+	}
+
+	private scrapAvatar_Url($: CheerioAPI): string {
+		return $("div.row > #content > .top").find("img").first().attr("src") || "";
 	}
 
 	private scrapHrefBio($: CheerioAPI): string {
