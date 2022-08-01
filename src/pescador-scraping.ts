@@ -5,7 +5,7 @@ import fetch from "./services/fetch";
 export class PensadorScrapingInstance implements PensadorScraping.events {
 	private pensador = new Pensador(fetch);
 	private scraping = new ScrapingInstance();
-
+	constructor() {}
 	/**
 	 *
 	 * @param {PensadorScraping.IPensador}
