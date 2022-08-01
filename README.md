@@ -3,9 +3,51 @@
  <p align="center">Faça um webscraping do site <a href="https://www.pensador.com/">pensador</a> procurando um pensamento (poesia, mensagem ou frase)</p>
 </p>
 
-### Features
+### O que faz?
 
-- Fazer busca no site e retorna uma lista de pensamentos, podendo limitar a quantidade dos resultados.
+- Buscar no site e retorna uma lista de pensamentos, podendo limitar a quantidade dos resultados.
 - Buscar informações de um determinado autor.
 - Buscar os Top 9 Autores do site.
-- Obter a biografia de um autor.
+- Buscar a biografia de um autor.
+
+### Como instala?
+
+```bash
+npm i pensador-scrap
+```
+
+### Exemplos
+
+Para buscar frases use o método `search`
+
+```js
+const { error, sucess } = await pensador.search({
+	query: "elon musk", //obrigatório
+	limit: 2, //opcional - padrão é 1
+});
+```
+
+tipagem do resultado vira assim:
+
+```ts
+{
+  author: {
+    name: string
+    thought_total: number
+    avatar_url: string
+    info: string
+    associated: string[]
+    bio: string
+    tags: string
+  },
+  thought:
+    {
+      author: string
+      content: string
+      image_url: string
+      url: string
+    }[]
+  query: string
+  total: number
+}
+```
