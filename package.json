@@ -1,16 +1,18 @@
 {
 	"name": "pensador-scrap",
-	"version": "0.0.2",
+	"version": "0.0.3",
 	"description": "biblioteca que ira fazer webscraping no site pensador.",
 	"main": "dist/index.js",
+	"module": "dist/esm/index.js",
 	"types": "dist/index.d.ts",
 	"scripts": {
 		"dev": "tsnd --respawn --transpile-only src/index.ts",
 		"prettier": "prettier --write .",
 		"test": "jest",
 		"test:watch": "jest --watchAll",
-		"build": "rimraf dist && rollup --config",
-		"tsc": "rimraf dist && tsc"
+		"build": "rimraf dist && npm run build:cjs && npm run build:esm",
+		"build:cjs": "tsc",
+		"build:esm": "npm run build:cjs -- --module esnext --target es2019 --outDir dist/esm && echo '{\"type\":\"module\"}' > dist/esm/package.json"
 	},
 	"repository": {
 		"type": "git",
