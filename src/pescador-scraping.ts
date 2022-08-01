@@ -2,98 +2,90 @@ import { ScrapingInstance } from "./module/web-scraping";
 import { Pensador } from "./module/pensador";
 import fetch from "./services/fetch";
 
-export class PensadorScrapingInstance implements PensadorScraping.events {
-	private pensador = new Pensador(fetch);
-	private scraping = new ScrapingInstance();
-	constructor() {}
-	/**
-	 *
-	 * @param {PensadorScraping.IPensador}
-	 * @returns {Promise<PensadorScraping.IResponse<PensadorScraping.IResponseSearch>>}
-	 */
-	async search({
-		limit = 1,
-		query,
-	}: PensadorScraping.IPensador): Promise<
-		PensadorScraping.IResponse<PensadorScraping.IResponseSearch>
-	> {
-		const { err, html } = await this.pensador.searchWord(query);
-		if (err) {
-			return { error: err };
-		}
-		if (!html) {
-			return { error: "html vázio" };
-		}
+const pensador = new Pensador(fetch);
+const scraping = new ScrapingInstance();
 
-		const { thought, total } = this.scraping.searchScrap(html, limit);
-		const author = this.scraping.authorScrap(html);
-		return {
-			sucess: {
-				author,
-				thought,
-				query,
-				total,
-			},
-		};
+export async function search({
+	limit = 1,
+	query,
+}: PensadorScraping.IPensador): Promise<
+	PensadorScraping.IResponse<PensadorScraping.IResponseSearch>
+> {
+	const { err, html } = await pensador.searchWord(query);
+	if (err) {
+		return { error: err };
+	}
+	if (!html) {
+		return { error: "html vázio" };
 	}
 
-	async aboutAuthor({
-		query,
-	}: Omit<PensadorScraping.IPensador, "limit">): Promise<
-		PensadorScraping.IResponse<PensadorScraping.IAuthorProps>
-	> {
-		const { err, html } = await this.pensador.getAuthor(query);
-		if (err) {
-			return { error: err };
-		}
-		if (!html) {
-			throw new Error("html vazio");
-		}
-
-		const result = this.scraping.authorScrap(html);
-		if (!result.info) {
-			return { error: `${query} não é um autor.` };
-		}
-
-		return {
-			sucess: result,
-		};
+	const { thought, total } = scraping.searchScrap(html, limit);
+	const author = scraping.authorScrap(html);
+	return {
+		sucess: {
+			author,
+			thought,
+			query,
+			total,
+		},
+	};
+}
+export async function aboutAuthor({
+	query,
+}: Omit<PensadorScraping.IPensador, "limit">): Promise<
+	PensadorScraping.IResponse<PensadorScraping.IAuthorProps>
+> {
+	const { err, html } = await pensador.getAuthor(query);
+	if (err) {
+		return { error: err };
+	}
+	if (!html) {
+		throw new Error("html vazio");
 	}
 
-	async bioAuthor({
-		query,
-	}: Omit<PensadorScraping.IPensador, "limit">): Promise<
-		PensadorScraping.IResponse<PensadorScraping.IBioAuthorProps>
-	> {
-		const { err, html } = await this.pensador.getBio(query);
-		if (err) {
-			return { error: err };
-		}
-		if (!html) {
-			throw new Error("html vazio");
-		}
-
-		const result = this.scraping.bioAuthorsScrap(html);
-		return {
-			sucess: result,
-		};
+	const result = scraping.authorScrap(html);
+	if (!result.info) {
+		return { error: `${query} não é um autor.` };
 	}
 
-	async rankingAuthors(): Promise<
-		PensadorScraping.IResponse<PensadorScraping.IRankingAuthorsProps[]>
-	> {
-		const { err, html } = await this.pensador.getHome();
-		if (err) {
-			throw new Error(err);
-		}
-		if (!html) {
-			throw new Error("html vazio");
-		}
-		const result = this.scraping.rakingAuthorsScrap(html);
-		return {
-			sucess: result,
-		};
+	return {
+		sucess: result,
+	};
+}
+
+export async function bioAuthor({
+	query,
+}: Omit<PensadorScraping.IPensador, "limit">): Promise<
+	PensadorScraping.IResponse<PensadorScraping.IBioAuthorProps>
+> {
+	const { err, html } = await pensador.getBio(query);
+	if (err) {
+		return { error: err };
 	}
+	if (!html) {
+		throw new Error("html vazio");
+	}
+
+	const result = scraping.bioAuthorsScrap(html);
+	return {
+		sucess: result,
+	};
+}
+
+export async function rankingAuthors(): Promise<
+	PensadorScraping.IResponse<PensadorScraping.IRankingAuthorsProps[]>
+> {
+	const { err, html } = await pensador.getHome();
+	if (err) {
+		throw new Error(err);
+	}
+	if (!html) {
+		throw new Error("html vazio");
+	}
+	const result = scraping.rakingAuthorsScrap(html);
+	return {
+		sucess: result,
+	};
 }
 
 declare namespace PensadorScraping {

@@ -1,5 +1,8 @@
-import { PensadorScrapingInstance } from "./pescador-scraping";
+import {
+	search,
+	aboutAuthor,
+	bioAuthor,
+	rankingAuthors,
+} from "./pescador-scraping";
 
-const PensadorScraping = new PensadorScrapingInstance();
-
-export default PensadorScraping;
+export { search, aboutAuthor, bioAuthor, rankingAuthors };
