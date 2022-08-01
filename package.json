@@ -1,5 +1,5 @@
 {
-	"name": "pensador-scraping",
+	"name": "pensador-scrap",
 	"version": "0.0.1",
 	"description": "biblioteca que ira fazer webscraping no site pensador.",
 	"main": "dist/index.cjs.js",
