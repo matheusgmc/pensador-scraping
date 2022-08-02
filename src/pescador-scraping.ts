@@ -3,6 +3,7 @@ import {
 	bioAuthorsScrap,
 	rakingAuthorsScrap,
 	searchScrap,
+	topicsScrap,
 } from "./modules/scraping";
 import {
 	search as searchWord,
@@ -48,7 +49,7 @@ export async function aboutAuthor({
 		return { error: err };
 	}
 	if (!html) {
-		throw new Error("html vazio");
+		return { error: "html vazio" };
 	}
 
 	const result = authorScrap(html);
@@ -71,7 +72,7 @@ export async function bioAuthor({
 		return { error: err };
 	}
 	if (!html) {
-		throw new Error("html vazio");
+		return { error: "html vazio" };
 	}
 
 	const result = bioAuthorsScrap(html);
@@ -85,12 +86,36 @@ export async function rankingAuthors(): Promise<
 > {
 	const { err, html } = await getHome();
 	if (err) {
-		throw new Error(err);
+		return { error: err };
 	}
 	if (!html) {
-		throw new Error("html vazio");
+		return { error: "html vazio" };
 	}
 	const result = rakingAuthorsScrap(html);
+	return {
+		sucess: result,
+	};
+}
+
+export async function getAssociated({
+	query,
+}: PensadorScrapingTypes.IPensador): Promise<
+	PensadorScrapingTypes.IResponse<PensadorScrapingTypes.ITopicProps[]>
+> {
+	const { err, html } = await searchWord(query);
+	if (err) {
+		return { error: err };
+	}
+
+	if (!html) {
+		return { error: "html vazio" };
+	}
+	const result = topicsScrap(html);
+
+	if (result.length == 0) {
+		return { error: "Não foi encontrado nenhum resultado" };
+	}
+
 	return {
 		sucess: result,
 	};
