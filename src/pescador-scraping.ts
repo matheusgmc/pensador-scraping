@@ -1,17 +1,25 @@
-import { ScrapingInstance } from "./module/web-scraping";
-import { Pensador } from "./module/pensador";
-import fetch from "./services/fetch";
+import {
+	authorScrap,
+	bioAuthorsScrap,
+	rakingAuthorsScrap,
+	searchScrap,
+} from "./modules/scraping";
+import {
+	search as searchWord,
+	getAuthor,
+	getBio,
+	getHome,
+} from "./modules/pensador/";
 
-const pensador = new Pensador(fetch);
-const scraping = new ScrapingInstance();
+import type { PensadorScrapingTypes } from "./types/";
 
 export async function search({
 	limit = 1,
 	query,
-}: PensadorScraping.IPensador): Promise<
-	PensadorScraping.IResponse<PensadorScraping.IResponseSearch>
+}: PensadorScrapingTypes.IPensador): Promise<
+	PensadorScrapingTypes.IResponse<PensadorScrapingTypes.IResponseSearch>
 > {
-	const { err, html } = await pensador.searchWord(query);
+	const { err, html } = await searchWord(query);
 	if (err) {
 		return { error: err };
 	}
@@ -19,8 +27,8 @@ export async function search({
 		return { error: "html vázio" };
 	}
 
-	const { thought, total } = scraping.searchScrap(html, limit);
-	const author = scraping.authorScrap(html);
+	const { thought, total } = searchScrap(html, limit);
+	const author = authorScrap(html);
 	return {
 		sucess: {
 			author,
@@ -32,10 +40,10 @@ export async function search({
 }
 export async function aboutAuthor({
 	query,
-}: Omit<PensadorScraping.IPensador, "limit">): Promise<
-	PensadorScraping.IResponse<PensadorScraping.IAuthorProps>
+}: Omit<PensadorScrapingTypes.IPensador, "limit">): Promise<
+	PensadorScrapingTypes.IResponse<PensadorScrapingTypes.IAuthorProps>
 > {
-	const { err, html } = await pensador.getAuthor(query);
+	const { err, html } = await getAuthor(query);
 	if (err) {
 		return { error: err };
 	}
@@ -43,7 +51,7 @@ export async function aboutAuthor({
 		throw new Error("html vazio");
 	}
 
-	const result = scraping.authorScrap(html);
+	const result = authorScrap(html);
 	if (!result.info) {
 		return { error: `${query} não é um autor.` };
 	}
@@ -55,10 +63,10 @@ export async function aboutAuthor({
 
 export async function bioAuthor({
 	query,
-}: Omit<PensadorScraping.IPensador, "limit">): Promise<
-	PensadorScraping.IResponse<PensadorScraping.IBioAuthorProps>
+}: Omit<PensadorScrapingTypes.IPensador, "limit">): Promise<
+	PensadorScrapingTypes.IResponse<PensadorScrapingTypes.IBioAuthorProps>
 > {
-	const { err, html } = await pensador.getBio(query);
+	const { err, html } = await getBio(query);
 	if (err) {
 		return { error: err };
 	}
@@ -66,92 +74,24 @@ export async function bioAuthor({
 		throw new Error("html vazio");
 	}
 
-	const result = scraping.bioAuthorsScrap(html);
+	const result = bioAuthorsScrap(html);
 	return {
 		sucess: result,
 	};
 }
 
 export async function rankingAuthors(): Promise<
-	PensadorScraping.IResponse<PensadorScraping.IRankingAuthorsProps[]>
+	PensadorScrapingTypes.IResponse<PensadorScrapingTypes.IRankingAuthorsProps[]>
 > {
-	const { err, html } = await pensador.getHome();
+	const { err, html } = await getHome();
 	if (err) {
 		throw new Error(err);
 	}
 	if (!html) {
 		throw new Error("html vazio");
 	}
-	const result = scraping.rakingAuthorsScrap(html);
+	const result = rakingAuthorsScrap(html);
 	return {
 		sucess: result,
 	};
-}
-
-declare namespace PensadorScraping {
-	/* protected scraping: Scraping;
-	protected pensador: Pensador; */
-	export interface IAuthorProps {
-		name: string;
-		avatar_url: string;
-		info: string;
-		thought_total: number;
-		associated: string[];
-		tags?: string;
-		bio?: string;
-	}
-	export interface IPensador {
-		query: string;
-		limit?: number;
-	}
-	export interface IResponseSearch extends IResponseScrapSearch {
-		query: string;
-		author: IAuthorProps;
-	}
-	export interface IResponseScrapSearch {
-		total: number;
-		thought: IThoughtProps[];
-	}
-	export interface IThoughtProps {
-		author: string;
-		content: string;
-		url: string;
-		image_url?: string;
-	}
-
-	export interface IResponse<T> {
-		sucess?: T;
-		error?: string;
-	}
-
-	export interface IBioAuthorProps {
-		title: string;
-		name: string;
-		associated: string[];
-		content: IContentProps[];
-	}
-	export interface IContentProps {
-		paragraph: string;
-		content: string[];
-	}
-
-	export interface IRankingAuthorsProps {
-		name: string;
-		avatar_url: string;
-		href: string;
-		position: number;
-	}
-	export interface events {
-		search(data: IPensador): Promise<IResponse<IResponseSearch>>;
-
-		aboutAuthor(
-			data: Omit<IPensador, "limit">
-		): Promise<IResponse<IAuthorProps>>;
-
-		bioAuthor(
-			data: Omit<IPensador, "limit">
-		): Promise<IResponse<IBioAuthorProps>>;
-
-		rankingAuthors(): Promise<IResponse<IRankingAuthorsProps[]>>;
-	}
 }
