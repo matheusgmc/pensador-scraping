@@ -1,4 +1,4 @@
-import PensadorScraping from "../src/";
+import * as PensadorScraping from "../src/";
 jest.setTimeout(10000); // 10 second timeout
 describe("Pensador - Scraping", () => {
 	const props = {
