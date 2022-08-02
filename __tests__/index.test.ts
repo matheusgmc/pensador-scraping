@@ -109,4 +109,31 @@ describe("Pensador - Scraping", () => {
 			});
 		});
 	});
+
+	describe("Get Associated", () => {
+		it("deveria obter com sucesso a lista associada com o item", async () => {
+			const { error, sucess } = await suit.getAssociated({
+				query: "frases",
+			});
+			expect(sucess?.length).toBeGreaterThanOrEqual(1);
+			sucess?.forEach((item, i) => {
+				expect(item).not.toHaveProperty("category", "");
+				expect(item).not.toHaveProperty("href", "");
+				expect(item).not.toHaveProperty("name", "");
+			});
+		});
+		it("deveria obter com sucesso a lista associada com o item", async () => {
+			const { error, sucess } = await suit.getAssociated({
+				query: "elon musk",
+			});
+			expect(error).toBe("Não foi encontrado nenhum resultado");
+		});
+
+		it("deveria falhar na ausência de um paramêtro", async () => {
+			const { error, sucess } = await suit.getAssociated({
+				query: "",
+			});
+			expect(error).toBe("essa query não é válido.");
+		});
+	});
 });
