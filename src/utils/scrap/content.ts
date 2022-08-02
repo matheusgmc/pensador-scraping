@@ -1,10 +1,10 @@
 import { CheerioAPI } from "cheerio";
-import { PescadorScrapingTypes } from "../../types/";
+import { PensadorScrapingTypes } from "../../types/";
 
 export const scrapContent = (
 	$: CheerioAPI
-): PescadorScrapingTypes.IContentProps[] => {
-	const data: PescadorScrapingTypes.IContentProps[] = [];
+): PensadorScrapingTypes.IContentProps[] => {
+	const data: PensadorScrapingTypes.IContentProps[] = [];
 	$("div.row > #content > #texto")
 		.children()
 		.each((i, e) => {
