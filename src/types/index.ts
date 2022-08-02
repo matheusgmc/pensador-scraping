@@ -18,6 +18,13 @@ export declare namespace PensadorScrapingTypes {
 		content: IContentProps[];
 	}
 
+	export interface ITopicProps {
+		category: string;
+		href: string;
+		name: string;
+		thought?: IThoughtProps;
+	}
+
 	export interface IContentProps {
 		paragraph: string;
 		content: string[];
