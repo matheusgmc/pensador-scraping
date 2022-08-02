@@ -1,7 +1,6 @@
-declare module "pescador-scraping-types" {
-	import { AxiosInstance } from "axios";
-	import { CheerioAPI } from "cheerio";
-
+import { AxiosInstance } from "axios";
+import { CheerioAPI } from "cheerio";
+export declare namespace PensadorScrapingTypes {
 	export interface IAuthorProps {
 		name: string;
 		avatar_url: string;
@@ -85,8 +84,6 @@ declare module "pescador-scraping-types" {
 	}
 
 	export class PensadorScraping {
-		/* protected scraping: Scraping;
-		protected pensador: Pensador; */
 		constructor();
 		search(data: IPensador): Promise<IResponse<IResponseSearch>>;
 
