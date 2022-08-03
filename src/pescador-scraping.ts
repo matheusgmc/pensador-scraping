@@ -12,7 +12,7 @@ import {
 	getHome,
 } from "./modules/pensador/";
 
-import { randomNumber, scrapThought } from "./utils";
+import { randomNumber } from "./utils";
 
 import type { PensadorScrapingTypes } from "./types/";
 
