@@ -9,7 +9,7 @@ import { scrapName } from "./scrap/name";
 import { scrapTags } from "./scrap/tags";
 import { scrapThought } from "./scrap/thought";
 import { splitThoughtTotalNumber } from "./scrap/thought-total";
-
+import { randomNumber } from "./random-number";
 export {
 	checkString,
 	scrapAssociated,
@@ -22,4 +22,5 @@ export {
 	scrapTags,
 	scrapThought,
 	splitThoughtTotalNumber,
+	randomNumber,
 };
