@@ -16,6 +16,19 @@ import { randomNumber } from "./utils";
 
 import type { PensadorScrapingTypes } from "./types/";
 
+/**
+ *
+ * @param {Object} data
+ * @param {string} data.query - o termo que queira buscar (obrigatório)
+ * @param {number} data.limit - a quantidade que deseja (padrão=1)
+ * @description Caso queira buscar uma lista de pensamento usando algum termo específico
+ * @example
+ *
+ *const {err,sucess} = await search({query:"elon musk"})
+ *	//err - em caso de erro
+ *	//sucess - em caso de sucesso ira retorna o pensamento
+ * const {author, thought, query,total } = sucess
+ */
 export async function search({
 	limit = 1,
 	query,
