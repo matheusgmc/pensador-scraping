@@ -12,6 +12,8 @@ import {
 	getHome,
 } from "./modules/pensador/";
 
+import { randomNumber, scrapThought } from "./utils";
+
 import type { PensadorScrapingTypes } from "./types/";
 
 export async function search({
@@ -119,4 +121,57 @@ export async function getAssociated({
 	return {
 		sucess: result,
 	};
+}
+
+export async function randomThought(
+	topic?: string
+): Promise<
+	PensadorScrapingTypes.IResponse<PensadorScrapingTypes.IThoughtProps>
+> {
+	const topics = ["frases", "frases_bonitas", "poemas", "mensagens", "textos"];
+	const { err, html } = await searchWord(
+		topic ? topic : topics[randomNumber(topics.length)]
+	);
+	const error = ErrorPensador({ err, html });
+	if (error) {
+		return { error };
+	}
+	const result = topicsScrap(html as string);
+	var listThoughts: PensadorScrapingTypes.IThoughtProps[] = [];
+	if (result.length == 0) {
+		const { thought, total } = searchScrap(html as string, 99);
+		if (total == 0) {
+			return { error: "não encontrei nenhum resultado" };
+		}
+		listThoughts = thought;
+	} else {
+		const topicSearch = result[randomNumber(result.length)];
+
+		const thoughts = await searchWord(topicSearch.name);
+
+		const errorThoughts = ErrorPensador(thoughts);
+		if (errorThoughts) {
+			return { error: errorThoughts };
+		}
+
+		const { thought, total } = searchScrap(thoughts.html as string, 99);
+		if (total == 0) {
+			return { error: "não encontrei nenhum resultado" };
+		}
+		listThoughts = thought;
+	}
+	return {
+		sucess: listThoughts[randomNumber(listThoughts.length)],
+	};
+}
+
+function ErrorPensador(
+	data: PensadorScrapingTypes.IResponsePensador
+): string | undefined {
+	if (data.err) {
+		return data.err;
+	}
+	if (!data.html) {
+		return "html vazio";
+	}
 }
