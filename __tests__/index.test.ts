@@ -136,4 +136,20 @@ describe("Pensador - Scraping", () => {
 			expect(error).toBe("essa query não é válido.");
 		});
 	});
+	describe.only("Get Random", () => {
+		it("deveria obter um thought de algum tópico aleatório", async () => {
+			const { error, sucess } = await suit.randomThought();
+			expect(sucess).not.toHaveProperty("content", "");
+			expect(sucess).not.toHaveProperty("url", "");
+			expect(sucess).not.toHaveProperty("image_url", "");
+			expect(sucess).not.toHaveProperty("author", "");
+		});
+		it("deveria obter um thought com sucesso", async () => {
+			const { error, sucess } = await suit.randomThought("elon musk");
+			expect(sucess).not.toHaveProperty("content", "");
+			expect(sucess).not.toHaveProperty("url", "");
+			expect(sucess).not.toHaveProperty("image_url", "");
+			expect(sucess).not.toHaveProperty("author", "");
+		});
+	});
 });
