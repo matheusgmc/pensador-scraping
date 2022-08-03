@@ -128,10 +128,7 @@ export async function randomThought(
 ): Promise<
 	PensadorScrapingTypes.IResponse<PensadorScrapingTypes.IThoughtProps>
 > {
-	const topics = ["frases", "frases_bonitas", "poemas", "mensagens", "textos"];
-	const { err, html } = await searchWord(
-		topic ? topic : topics[randomNumber(topics.length)]
-	);
+	const { err, html } = await searchWord(topic ? topic : "frases");
 	const error = ErrorPensador({ err, html });
 	if (error) {
 		return { error };
