@@ -136,7 +136,7 @@ describe("Pensador - Scraping", () => {
 			expect(error).toBe("essa query não é válido.");
 		});
 	});
-	describe.only("Get Random", () => {
+	describe("Get Random", () => {
 		it("deveria obter um thought de algum tópico aleatório", async () => {
 			const { error, sucess } = await suit.randomThought();
 			expect(sucess).not.toHaveProperty("content", "");
