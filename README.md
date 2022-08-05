@@ -22,7 +22,9 @@ npm i pensador-scrap
 
 ### Exemplos
 
-Para buscar frases use o método `search`
+para mais [Exemplos](./examples/),
+
+Buscar um pensamento usando o `search`
 
 ```js
 const { error, sucess } = await pensador.search({
