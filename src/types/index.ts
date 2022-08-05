@@ -26,8 +26,8 @@ export declare namespace PensadorScrapingTypes {
 	}
 
 	export interface IContentProps {
-		paragraph: string;
-		content: string[];
+		paragraphs: string[];
+		topic: string;
 	}
 
 	export interface IRankingAuthorsProps {
