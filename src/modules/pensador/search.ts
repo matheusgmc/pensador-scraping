@@ -13,7 +13,6 @@ export async function search(
 		const { data } = await router.get("/" + q.replace(/[ ]/gi, "_"));
 		return { html: data };
 	} catch (error: any) {
-		console.log(error);
 		return { err: `${error.message} - query: ${q}` };
 	}
 }
