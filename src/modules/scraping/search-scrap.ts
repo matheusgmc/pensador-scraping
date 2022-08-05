@@ -18,7 +18,7 @@ export function searchScrap(
 						.find(
 							".iconbar > .icon-bar--user-wrapper > .icon-user--btn.more > a"
 						)
-						.attr("href")
+						.attr("href") || $(e).find(".image-card-link").attr("href")
 				),
 			};
 		})
