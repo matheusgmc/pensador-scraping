@@ -1,7 +1,7 @@
 import { checkString } from "./validate-string";
 import { scrapAssociated } from "./scrap/associated";
 import { scrapAvatar_Url } from "./scrap/avatar_url";
-import { scrapContent } from "./scrap/content";
+import { scrapParagraphs } from "./scrap/paragraphs";
 import { formatUrl } from "./scrap/format-url";
 import { scrapHrefBio } from "./scrap/href-bio";
 import { scrapInfo } from "./scrap/info";
@@ -15,7 +15,7 @@ export {
 	scrapAssociated,
 	formatUrl,
 	scrapAvatar_Url,
-	scrapContent,
+	scrapParagraphs,
 	scrapHrefBio,
 	scrapInfo,
 	scrapName,

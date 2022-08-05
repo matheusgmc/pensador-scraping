@@ -1,7 +1,7 @@
 import { CheerioAPI } from "cheerio";
-import { PensadorScrapingTypes } from "../../types/";
+import { PensadorScrapingTypes } from "../../types";
 
-export const scrapContent = (
+export const scrapParagraphs = (
 	$: CheerioAPI
 ): PensadorScrapingTypes.IContentProps[] => {
 	const data: PensadorScrapingTypes.IContentProps[] = [];
@@ -11,13 +11,13 @@ export const scrapContent = (
 			const item = $(e).text().trim();
 			if (data.length == 0 || e.name == "h2") {
 				data.push({
-					content: [],
-					paragraph: item,
+					paragraphs: [],
+					topic: item,
 				});
 				return;
 			}
 
-			data[data.length - 1].content.push(item);
+			data[data.length - 1].paragraphs.push(item);
 		});
 	return data;
 };
