@@ -11,7 +11,7 @@ export async function getAuthor(
 			throw new Error("essa query não é válido.");
 		}
 		const { data } = await router.get(
-			"/autor/" + author.toLowerCase().replace(" ", "_")
+			"/autor/" + author.toLowerCase().replace(/[ ]/gi, "_")
 		);
 		return { html: data };
 	} catch (error: any) {
