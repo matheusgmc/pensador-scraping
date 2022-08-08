@@ -13,7 +13,8 @@
 		"test:coverage": "jest --coverage",
 		"build": "rimraf dist && npm run build:cjs && npm run build:esm",
 		"build:cjs": "tsc",
-		"build:esm": "npm run build:cjs -- --module esnext --target es2019 --outDir dist/esm && echo '{\"type\":\"module\"}' > dist/esm/package.json"
+		"build:esm": "npm run build:cjs -- --module esnext --target es2019 --outDir dist/esm && echo '{\"type\":\"module\"}' > dist/esm/package.json",
+		"npm:publish": "npm run test && npm run build && npm publish"
 	},
 	"repository": {
 		"type": "git",
