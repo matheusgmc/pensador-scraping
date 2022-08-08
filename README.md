@@ -5,7 +5,7 @@
 
 [![npm version](https://img.shields.io/npm/v/pensador-scrap.svg?style=flat-square)](https://www.npmjs.org/package/pensador-scrap)
 [![npm downloads](https://img.shields.io/npm/dm/pensador-scrap.svg?style=flat-square)](https://npm-stat.com/charts.html?package=pensador-scrap)
-[![Coverage Status](https://coveralls.io/repos/github/matheusgmc/pensador-scraping/badge.svg?branch=coverage)](https://coveralls.io/github/matheusgmc/pensador-scraping?branch=coverage)
+[![Coverage Status](https://coveralls.io/repos/github/matheusgmc/pensador-scraping/badge.svg?branch=main)](https://coveralls.io/github/matheusgmc/pensador-scraping?branch=main)
 
 ### O que faz?
 
