@@ -47,7 +47,7 @@ describe("Pensador - Scraping", () => {
 
 		it("deveria falhar por ser um item inválido.", async () => {
 			const { error } = await suit.search(propsFail);
-			expect(error).toBe("essa query não é válido.");
+			expect(error).toBe("essa query não é válido. - query: null");
 		});
 	});
 	describe("About Author", () => {
@@ -133,7 +133,7 @@ describe("Pensador - Scraping", () => {
 			const { error, sucess } = await suit.getAssociated({
 				query: "",
 			});
-			expect(error).toBe("essa query não é válido.");
+			expect(error).toBe("essa query não é válido. - query: ");
 		});
 	});
 	describe("Get Random", () => {
