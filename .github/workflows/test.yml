@@ -9,7 +9,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        node: [6, 8, 10, 12, 14]
+        node: [10, 12, 14]
         os: [ubuntu-latest, windows-latest]
 
     steps:
@@ -25,7 +25,7 @@ jobs:
         run: npm install # switch to `npm ci` when Node.js 6 support is dropped
 
       - name: Run tests
-        run: npm run test:coverage && coveralls < coverage/lcov.info
+        run: npm run test:coverage && npx coveralls < coverage/lcov.info
 
       - name: Coveralls
         uses: coverallsapp/github-action@master
