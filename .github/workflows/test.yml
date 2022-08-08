@@ -25,12 +25,12 @@ jobs:
         run: npm install # switch to `npm ci` when Node.js 6 support is dropped
 
       - name: Run tests
-        run: npx jest --coverage && npx coveralls < coverage/lcov.info
+        run: npx jest --coverage
 
       - name: Coveralls
         uses: coverallsapp/github-action@master
         with:
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
           flag-name: ${{matrix.os}}-node-${{ matrix.node }}
           parallel: true
 
@@ -41,5 +41,5 @@ jobs:
       - name: Coveralls Finished
         uses: coverallsapp/github-action@master
         with:
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
           parallel-finished: true
