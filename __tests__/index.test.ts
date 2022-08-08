@@ -1,17 +1,5 @@
 import * as PensadorScraping from "../src/";
 
-interface CustomMatchers<R = unknown> {
-	toBeContentOrImage(): R;
-}
-
-declare global {
-	namespace jest {
-		interface Expect extends CustomMatchers {}
-		interface Matchers<R> extends CustomMatchers<R> {}
-		interface InverseAsymmetricMatchers extends CustomMatchers {}
-	}
-}
-
 expect.extend({
 	toBeContentOrImage(received) {
 		if (!received.content) {
@@ -173,7 +161,7 @@ describe("Pensador - Scraping", () => {
 	describe.only("Get Random", () => {
 		it("deveria obter um thought de algum tópico aleatório", async () => {
 			const { error, sucess } = await suit.randomThought();
-			expect(sucess).not.toHaveProperty("content", "");
+			expect(sucess).toBeContentOrImage();
 			expect(sucess).not.toHaveProperty("url", "");
 			expect(sucess).not.toHaveProperty("author", "");
 		});
