@@ -21,7 +21,7 @@ expect.extend({
 	},
 });
 
-jest.setTimeout(10000); // 10 second timeout
+jest.setTimeout(15000); // 15 second timeout
 describe("Pensador - Scraping", () => {
 	const props = {
 		query: "elon musk",
@@ -158,7 +158,7 @@ describe("Pensador - Scraping", () => {
 			expect(error).toBe("essa query não é válido. - query: ");
 		});
 	});
-	describe.only("Get Random", () => {
+	describe("Get Random", () => {
 		it("deveria obter um thought de algum tópico aleatório", async () => {
 			const { error, sucess } = await suit.randomThought();
 			expect(sucess).toBeContentOrImage();
