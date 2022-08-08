@@ -1,4 +1,38 @@
 import * as PensadorScraping from "../src/";
+
+interface CustomMatchers<R = unknown> {
+	toBeContentOrImage(): R;
+}
+
+declare global {
+	namespace jest {
+		interface Expect extends CustomMatchers {}
+		interface Matchers<R> extends CustomMatchers<R> {}
+		interface InverseAsymmetricMatchers extends CustomMatchers {}
+	}
+}
+
+expect.extend({
+	toBeContentOrImage(received) {
+		if (!received.content) {
+			if (!received.image_url) {
+				return {
+					message: () => `expected image_url is empty`,
+					pass: false,
+				};
+			}
+			return {
+				message: () => "expected image_url is not empty",
+				pass: true,
+			};
+		}
+		return {
+			message: () => "expected content is not empty",
+			pass: true,
+		};
+	},
+});
+
 jest.setTimeout(10000); // 10 second timeout
 describe("Pensador - Scraping", () => {
 	const props = {
@@ -136,7 +170,7 @@ describe("Pensador - Scraping", () => {
 			expect(error).toBe("essa query não é válido. - query: ");
 		});
 	});
-	describe("Get Random", () => {
+	describe.only("Get Random", () => {
 		it("deveria obter um thought de algum tópico aleatório", async () => {
 			const { error, sucess } = await suit.randomThought();
 			expect(sucess).not.toHaveProperty("content", "");
@@ -145,7 +179,7 @@ describe("Pensador - Scraping", () => {
 		});
 		it("deveria obter um thought com sucesso", async () => {
 			const { error, sucess } = await suit.randomThought("elon musk");
-			expect(sucess).not.toHaveProperty("content", "");
+			expect(sucess).toBeContentOrImage();
 			expect(sucess).not.toHaveProperty("url", "");
 			expect(sucess).not.toHaveProperty("author", "");
 		});
