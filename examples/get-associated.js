@@ -1,7 +1,7 @@
 const pensador = require("../dist");
 
 (async () => {
-	const { error, sucess } = await pensador.getAssociated({
+	const { error, success } = await pensador.getAssociated({
 		query: "frases",
 	});
 
@@ -9,7 +9,7 @@ const pensador = require("../dist");
 		return console.log("ocorreu algum erro:", error);
 	}
 
-	console.log(sucess);
+	console.log(success);
 })();
 /**
 [

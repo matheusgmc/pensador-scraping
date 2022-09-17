@@ -25,10 +25,10 @@ import type { PensadorScrapingTypes } from "./types/";
  * @description Caso queira buscar uma lista de pensamento usando algum termo específico
  * @example
  *
- *const {err,sucess} = await search({query:"elon musk"})
+ *const {err,success} = await search({query:"elon musk"})
  *	//err - em caso de erro
- *	//sucess - em caso de sucesso ira retorna o pensamento
- * const {author, thought, query,total } = sucess
+ *	//success - em caso de sucesso ira retorna o pensamento
+ * const {author, thought, query,total } = success
  */
 export async function search({
 	limit = 1,
@@ -47,7 +47,7 @@ export async function search({
 	const { thought, total } = searchScrap(html, limit);
 	const author = authorScrap(html);
 	return {
-		sucess: {
+		success: {
 			author,
 			thought,
 			query,
@@ -63,10 +63,10 @@ export async function search({
  * @description Diferente do `bio-author` que retorna a biografia completa, aqui ira retorna um breve resumo do autor.
  * @example
  *
- *const {err,sucess} = await aboutAuthor({query:"elon musk"})
+ *const {err,success} = await aboutAuthor({query:"elon musk"})
  *	//err - em caso de erro
- *	//sucess - em caso de sucesso
- * const {name, thought_total,avatar_url, info,associated,bio,tags} = sucess
+ *	//success - em caso de sucesso
+ * const {name, thought_total,avatar_url, info,associated,bio,tags} = success
  */
 export async function aboutAuthor({
 	query,
@@ -87,7 +87,7 @@ export async function aboutAuthor({
 	}
 
 	return {
-		sucess: result,
+		success: result,
 	};
 }
 
@@ -98,10 +98,10 @@ export async function aboutAuthor({
  * @description Utilizado para obter a biografia de um autor, recebe o conteúdo da pagina dividos por tópicos.
  * @example
  *
- *const {err,sucess} = await bioAuthor({query:"o rappa"})
+ *const {err,success} = await bioAuthor({query:"o rappa"})
  *	//err - em caso de erro
- *	//sucess - em caso de sucesso
- * const {associated, content,name, info,associated,title} = sucess
+ *	//success - em caso de sucesso
+ * const {associated, content,name, info,associated,title} = success
  */
 export async function bioAuthor({
 	query,
@@ -118,17 +118,17 @@ export async function bioAuthor({
 
 	const result = bioAuthorsScrap(html);
 	return {
-		sucess: result,
+		success: result,
 	};
 }
 /**
  * @description Ira buscar na home do site os 9 autores mais populares.
  * @example
  *
- *const {err,sucess} = await rankingAuthor()
+ *const {err,success} = await rankingAuthor()
  *	//err - em caso de erro
- *	//sucess - em caso de sucesso
- * const {avatar_url,href,name,position} = sucess[0] //retorna um array
+ *	//success - em caso de sucesso
+ * const {avatar_url,href,name,position} = success[0] //retorna um array
  */
 export async function rankingAuthors(): Promise<
 	PensadorScrapingTypes.IResponse<PensadorScrapingTypes.IRankingAuthorsProps[]>
@@ -142,7 +142,7 @@ export async function rankingAuthors(): Promise<
 	}
 	const result = rakingAuthorsScrap(html);
 	return {
-		sucess: result,
+		success: result,
 	};
 }
 /**
@@ -151,10 +151,10 @@ export async function rankingAuthors(): Promise<
  * @description Ao buscar um determinado termo, ira obter uma lista de temas associados ao termo.
  * @example
  *
- *const {err,sucess} = await rankingAuthor()
+ *const {err,success} = await rankingAuthor()
  *	//err - em caso de erro
- *	//sucess - em caso de sucesso
- * const {href,name,category} = sucess[0] //retorna um array
+ *	//success - em caso de sucesso
+ * const {href,name,category} = success[0] //retorna um array
  */
 export async function getAssociated({
 	query,
@@ -176,7 +176,7 @@ export async function getAssociated({
 	}
 
 	return {
-		sucess: result,
+		success: result,
 	};
 }
 
@@ -185,10 +185,10 @@ export async function getAssociated({
  * @description Caso queira um pensamento aleatório sobre algum tópico especifico ou não.
  * @example
  *
- *const {err,sucess} = await randomThought()
+ *const {err,success} = await randomThought()
  *	//err - em caso de erro
- *	//sucess - em caso de sucesso
- * const {author, content, image_url, url} = sucess
+ *	//success - em caso de sucesso
+ * const {author, content, image_url, url} = success
  */
 export async function randomThought(
 	topic?: string
@@ -224,7 +224,7 @@ export async function randomThought(
 		listThoughts = thought;
 	}
 	return {
-		sucess: listThoughts[randomNumber(listThoughts.length)],
+		success: listThoughts[randomNumber(listThoughts.length)],
 	};
 }
 

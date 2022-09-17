@@ -1,12 +1,12 @@
 const pensador = require("../dist");
 
 (async () => {
-	const { error, sucess } = await pensador.randomThought();
+	const { error, success } = await pensador.randomThought();
 	if (error) {
 		return console.log("ocorreu algum erro:", error);
 	}
 
-	console.log(sucess);
+	console.log(success);
 })();
 /**
 {

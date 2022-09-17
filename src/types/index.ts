@@ -1,107 +1,107 @@
 import { AxiosInstance } from "axios";
 import { CheerioAPI } from "cheerio";
 export declare namespace PensadorScrapingTypes {
-	export interface IAuthorProps {
-		name: string;
-		avatar_url: string;
-		info: string;
-		thought_total: number;
-		associated: string[];
-		tags?: string;
-		bio?: string;
-	}
+  export interface IAuthorProps {
+    name: string;
+    avatar_url: string;
+    info: string;
+    thought_total: number;
+    associated: string[];
+    tags?: string;
+    bio?: string;
+  }
 
-	export interface IBioAuthorProps {
-		title: string;
-		name: string;
-		associated: string[];
-		content: IContentProps[];
-	}
+  export interface IBioAuthorProps {
+    title: string;
+    name: string;
+    associated: string[];
+    content: IContentProps[];
+  }
 
-	export interface ITopicProps {
-		category: string;
-		href: string;
-		name: string;
-		thought?: IThoughtProps;
-	}
+  export interface ITopicProps {
+    category: string;
+    href: string;
+    name: string;
+    thought?: IThoughtProps;
+  }
 
-	export interface IContentProps {
-		paragraphs: string[];
-		topic: string;
-	}
+  export interface IContentProps {
+    paragraphs: string[];
+    topic: string;
+  }
 
-	export interface IRankingAuthorsProps {
-		name: string;
-		avatar_url: string;
-		href: string;
-		position: number;
-	}
+  export interface IRankingAuthorsProps {
+    name: string;
+    avatar_url: string;
+    href: string;
+    position: number;
+  }
 
-	export interface IThoughtProps {
-		author: string;
-		content: string;
-		url: string;
-		image_url?: string;
-	}
+  export interface IThoughtProps {
+    author: string;
+    content: string;
+    url: string;
+    image_url?: string;
+  }
 
-	export interface IPensador {
-		query: string;
-		limit?: number;
-	}
-	export interface IResponse<T> {
-		sucess?: T;
-		error?: string;
-	}
+  export interface IPensador {
+    query: string;
+    limit?: number;
+  }
+  export interface IResponse<T> {
+    success?: T;
+    error?: string;
+  }
 
-	export interface IResponseSearch extends IResponseScrapSearch {
-		query: string;
-		author: IAuthorProps;
-	}
+  export interface IResponseSearch extends IResponseScrapSearch {
+    query: string;
+    author: IAuthorProps;
+  }
 
-	export interface IResponseScrapSearch {
-		total: number;
-		thought: IThoughtProps[];
-	}
+  export interface IResponseScrapSearch {
+    total: number;
+    thought: IThoughtProps[];
+  }
 
-	export interface IResponsePensador {
-		html?: string;
-		err?: string;
-	}
+  export interface IResponsePensador {
+    html?: string;
+    err?: string;
+  }
 
-	export class PensadorFetch {
-		constructor(router: AxiosInstance);
+  export class PensadorFetch {
+    constructor(router: AxiosInstance);
 
-		searchWord(q: string): Promise<IResponsePensador>;
-		getAuthor(author: string): Promise<IResponsePensador>;
+    searchWord(q: string): Promise<IResponsePensador>;
+    getAuthor(author: string): Promise<IResponsePensador>;
 
-		getHome(): Promise<IResponsePensador>;
+    getHome(): Promise<IResponsePensador>;
 
-		getBio(author: string): Promise<IResponsePensador>;
-	}
+    getBio(author: string): Promise<IResponsePensador>;
+  }
 
-	export class Scraping {
-		constructor();
-		searchScrap(html: string, limit: number): IResponseScrapSearch;
+  export class Scraping {
+    constructor();
+    searchScrap(html: string, limit: number): IResponseScrapSearch;
 
-		authorScrap(html: string): IAuthorProps;
+    authorScrap(html: string): IAuthorProps;
 
-		rakingAuthorsScrap(html: string): IRankingAuthorsProps[];
+    rakingAuthorsScrap(html: string): IRankingAuthorsProps[];
 
-		bioAuthorsScrap(html: string): IBioAuthorProps;
-	}
+    bioAuthorsScrap(html: string): IBioAuthorProps;
+  }
 
-	export class PensadorScraping {
-		constructor();
-		search(data: IPensador): Promise<IResponse<IResponseSearch>>;
+  export class PensadorScraping {
+    constructor();
+    search(data: IPensador): Promise<IResponse<IResponseSearch>>;
 
-		aboutAuthor(
-			data: Omit<IPensador, "limit">
-		): Promise<IResponse<IAuthorProps>>;
+    aboutAuthor(
+      data: Omit<IPensador, "limit">
+    ): Promise<IResponse<IAuthorProps>>;
 
-		bioAuthor(
-			data: Omit<IPensador, "limit">
-		): Promise<IResponse<IBioAuthorProps>>;
+    bioAuthor(
+      data: Omit<IPensador, "limit">
+    ): Promise<IResponse<IBioAuthorProps>>;
 
-		rankingAuthors(): Promise<IResponse<IRankingAuthorsProps[]>>;
-	}
+    rankingAuthors(): Promise<IResponse<IRankingAuthorsProps[]>>;
+  }
 }

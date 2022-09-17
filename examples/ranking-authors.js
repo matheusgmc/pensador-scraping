@@ -1,13 +1,13 @@
 const pensador = require("../dist/");
 
 (async () => {
-	const { error, sucess } = await pensador.rankingAuthors();
+	const { error, success } = await pensador.rankingAuthors();
 
 	if (error) {
 		return console.log(error);
 	}
 
-	console.log(sucess);
+	console.log(success);
 })();
 
 /**

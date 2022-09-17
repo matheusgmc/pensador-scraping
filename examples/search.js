@@ -1,13 +1,13 @@
 const pensador = require("../dist/");
 (async () => {
-	const { error, sucess } = await pensador.search({
+	const { error, success } = await pensador.search({
 		query: "elon musk",
 		limit: 2,
 	});
 	if (error) {
 		return console.log("ocorreu um erro:", error);
 	}
-	console.log(sucess);
+	console.log(success);
 })();
 
 /**

@@ -1,7 +1,7 @@
 const pensador = require("../dist");
 
 (async () => {
-	const { error, sucess } = await pensador.aboutAuthor({
+	const { error, success } = await pensador.aboutAuthor({
 		query: "elon musk",
 	});
 
@@ -9,7 +9,7 @@ const pensador = require("../dist");
 		return console.log("ocorreu algum erro:", error);
 	}
 
-	console.log(sucess);
+	console.log(success);
 })();
 /**
 {

@@ -1,5 +1,13 @@
 import * as PensadorScraping from "../src/";
 
+declare global {
+	namespace jest {
+		interface Matchers<R> {
+			toBeContentOrImage(): R;
+		}
+	}
+}
+
 expect.extend({
 	toBeContentOrImage(received) {
 		if (!received.content) {
@@ -39,32 +47,32 @@ describe("Pensador - Scraping", () => {
 
 	describe("Search", () => {
 		it("deveria retorna uma item com sucesso porem limitado a 1 resultado de pensamento.", async () => {
-			const { sucess } = await suit.search(props);
-			expect(sucess?.query.toLowerCase()).toBe("elon musk");
-			expect(sucess?.total).toBe(1);
-			expect(sucess?.thought[0]).toHaveProperty("author", "Elon Musk");
-			expect(sucess?.thought[0]).not.toHaveProperty("content", "");
-			expect(sucess?.thought[0]).not.toHaveProperty("url", "");
-			expect(sucess?.author.associated.length).toBeGreaterThanOrEqual(1);
-			expect(sucess?.author.info).not.toBe("");
-			expect(sucess?.author.name.toLowerCase()).toBe("elon musk");
-			expect(sucess?.author.thought_total).toBeGreaterThanOrEqual(26);
+			const { success } = await suit.search(props);
+			expect(success?.query.toLowerCase()).toBe("elon musk");
+			expect(success?.total).toBe(1);
+			expect(success?.thought[0]).toHaveProperty("author", "Elon Musk");
+			expect(success?.thought[0]).not.toHaveProperty("content", "");
+			expect(success?.thought[0]).not.toHaveProperty("url", "");
+			expect(success?.author.associated.length).toBeGreaterThanOrEqual(1);
+			expect(success?.author.info).not.toBe("");
+			expect(success?.author.name.toLowerCase()).toBe("elon musk");
+			expect(success?.author.thought_total).toBeGreaterThanOrEqual(26);
 		});
 
 		it("deveria retorna uma item com sucesso porem limitado a 5 resultado de pensamento.", async () => {
-			const { sucess } = await suit.search({
+			const { success } = await suit.search({
 				...props,
 				limit: 5,
 			});
-			expect(sucess?.query.toLowerCase()).toBe("elon musk");
-			expect(sucess?.total).toBe(5);
-			expect(sucess?.thought[0]).toHaveProperty("author", "Elon Musk");
-			expect(sucess?.thought[0]).not.toHaveProperty("content", "");
-			expect(sucess?.thought[0]).not.toHaveProperty("url", "");
-			expect(sucess?.author.associated.length).toBeGreaterThanOrEqual(1);
-			expect(sucess?.author.info).not.toBe("");
-			expect(sucess?.author.name.toLowerCase()).toBe("elon musk");
-			expect(sucess?.author.thought_total).toBeGreaterThanOrEqual(26);
+			expect(success?.query.toLowerCase()).toBe("elon musk");
+			expect(success?.total).toBe(5);
+			expect(success?.thought[0]).toHaveProperty("author", "Elon Musk");
+			expect(success?.thought[0]).not.toHaveProperty("content", "");
+			expect(success?.thought[0]).not.toHaveProperty("url", "");
+			expect(success?.author.associated.length).toBeGreaterThanOrEqual(1);
+			expect(success?.author.info).not.toBe("");
+			expect(success?.author.name.toLowerCase()).toBe("elon musk");
+			expect(success?.author.thought_total).toBeGreaterThanOrEqual(26);
 		});
 
 		it("deveria falhar por ser um item inválido.", async () => {
@@ -74,22 +82,22 @@ describe("Pensador - Scraping", () => {
 	});
 	describe("About Author", () => {
 		it("deveria obter as informações do autor com sucesso.", async () => {
-			const { sucess } = await suit.aboutAuthor({
+			const { success } = await suit.aboutAuthor({
 				query: "William Shakespeare",
 			});
-			expect(sucess?.name.toLowerCase()).toBe("william shakespeare");
+			expect(success?.name.toLowerCase()).toBe("william shakespeare");
 
-			expect(sucess?.associated.length).toBeGreaterThanOrEqual(1);
-			expect(sucess?.thought_total).toBeGreaterThanOrEqual(26);
+			expect(success?.associated.length).toBeGreaterThanOrEqual(1);
+			expect(success?.thought_total).toBeGreaterThanOrEqual(26);
 
-			expect(sucess?.bio).not.toBeUndefined();
-			expect(sucess?.tags).not.toBeUndefined();
+			expect(success?.bio).not.toBeUndefined();
+			expect(success?.tags).not.toBeUndefined();
 
-			expect(sucess?.avatar_url).not.toBe("");
+			expect(success?.avatar_url).not.toBe("");
 
-			expect(sucess?.info).not.toBe("");
-			expect(sucess?.bio).not.toBe("");
-			expect(sucess?.tags).not.toBe("");
+			expect(success?.info).not.toBe("");
+			expect(success?.bio).not.toBe("");
+			expect(success?.tags).not.toBe("");
 		});
 		it("deveria falhar ao não encontra um autor.", async () => {
 			const { error } = await suit.aboutAuthor(propsWord);
@@ -103,15 +111,15 @@ describe("Pensador - Scraping", () => {
 
 	describe("Biography Author", () => {
 		it("deveria obter as informações do autor com sucesso.", async () => {
-			const { sucess } = await suit.bioAuthor({
+			const { success } = await suit.bioAuthor({
 				query: "William Shakespeare",
 			});
-			expect(sucess?.name.toLowerCase()).toBe("william shakespeare");
-			expect(sucess?.title.toLowerCase()).toBe(
+			expect(success?.name.toLowerCase()).toBe("william shakespeare");
+			expect(success?.title.toLowerCase()).toBe(
 				"biografia de william shakespeare"
 			);
-			expect(sucess?.content.length).toBeGreaterThanOrEqual(1);
-			expect(sucess?.associated.length).toBeGreaterThanOrEqual(1);
+			expect(success?.content.length).toBeGreaterThanOrEqual(1);
+			expect(success?.associated.length).toBeGreaterThanOrEqual(1);
 		});
 		it("deveria falhar se a query é inválida.", async () => {
 			const { error } = await suit.bioAuthor(propsFail);
@@ -121,9 +129,9 @@ describe("Pensador - Scraping", () => {
 
 	describe("Ranking Authors", () => {
 		it("deveria obter com sucesso as lista dos top 9 do site", async () => {
-			const { sucess } = await suit.rankingAuthors();
-			expect(sucess).toHaveLength(9);
-			sucess?.forEach((item, i) => {
+			const { success } = await suit.rankingAuthors();
+			expect(success).toHaveLength(9);
+			success?.forEach((item, i) => {
 				expect(item).not.toHaveProperty("avatar_url", "");
 				expect(item).not.toHaveProperty("name", "");
 				expect(item).not.toHaveProperty("href", "");
@@ -134,25 +142,25 @@ describe("Pensador - Scraping", () => {
 
 	describe("Get Associated", () => {
 		it("deveria obter com sucesso a lista associada com o item", async () => {
-			const { error, sucess } = await suit.getAssociated({
+			const { success } = await suit.getAssociated({
 				query: "frases",
 			});
-			expect(sucess?.length).toBeGreaterThanOrEqual(1);
-			sucess?.forEach((item, i) => {
+			expect(success?.length).toBeGreaterThanOrEqual(1);
+			success?.forEach(item => {
 				expect(item).not.toHaveProperty("category", "");
 				expect(item).not.toHaveProperty("href", "");
 				expect(item).not.toHaveProperty("name", "");
 			});
 		});
 		it("deveria obter com sucesso a lista associada com o item", async () => {
-			const { error, sucess } = await suit.getAssociated({
+			const { error } = await suit.getAssociated({
 				query: "elon musk",
 			});
 			expect(error).toBe("Não foi encontrado nenhum resultado");
 		});
 
 		it("deveria falhar na ausência de um paramêtro", async () => {
-			const { error, sucess } = await suit.getAssociated({
+			const { error } = await suit.getAssociated({
 				query: "",
 			});
 			expect(error).toBe("essa query não é válido. - query: ");
@@ -160,16 +168,16 @@ describe("Pensador - Scraping", () => {
 	});
 	describe("Get Random", () => {
 		it("deveria obter um thought de algum tópico aleatório", async () => {
-			const { error, sucess } = await suit.randomThought();
-			expect(sucess).toBeContentOrImage();
-			expect(sucess).not.toHaveProperty("url", "");
-			expect(sucess).not.toHaveProperty("author", "");
+			const { success } = await suit.randomThought();
+			expect(success).toBeContentOrImage();
+			expect(success).not.toHaveProperty("url", "");
+			expect(success).not.toHaveProperty("author", "");
 		});
 		it("deveria obter um thought com sucesso", async () => {
-			const { error, sucess } = await suit.randomThought("elon musk");
-			expect(sucess).toBeContentOrImage();
-			expect(sucess).not.toHaveProperty("url", "");
-			expect(sucess).not.toHaveProperty("author", "");
+			const { success } = await suit.randomThought("elon musk");
+			expect(success).toBeContentOrImage();
+			expect(success).not.toHaveProperty("url", "");
+			expect(success).not.toHaveProperty("author", "");
 		});
 	});
 });

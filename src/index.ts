@@ -5,7 +5,7 @@ import {
 	rankingAuthors,
 	getAssociated,
 	randomThought,
-} from "./pescador-scraping";
+} from "./pensador-scraping";
 
 export {
 	search,
