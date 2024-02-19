@@ -54,9 +54,7 @@ describe("Pensador - Scraping", () => {
 			expect(success?.thought[0]).not.toHaveProperty("content", "");
 			expect(success?.thought[0]).not.toHaveProperty("url", "");
 			expect(success?.author.associated.length).toBeGreaterThanOrEqual(1);
-			expect(success?.author.info).not.toBe("");
 			expect(success?.author.name.toLowerCase()).toBe("elon musk");
-			expect(success?.author.thought_total).toBeGreaterThanOrEqual(26);
 		});
 
 		it("deveria retorna uma item com sucesso porem limitado a 5 resultado de pensamento.", async () => {
@@ -70,9 +68,7 @@ describe("Pensador - Scraping", () => {
 			expect(success?.thought[0]).not.toHaveProperty("content", "");
 			expect(success?.thought[0]).not.toHaveProperty("url", "");
 			expect(success?.author.associated.length).toBeGreaterThanOrEqual(1);
-			expect(success?.author.info).not.toBe("");
 			expect(success?.author.name.toLowerCase()).toBe("elon musk");
-			expect(success?.author.thought_total).toBeGreaterThanOrEqual(26);
 		});
 
 		it("deveria falhar por ser um item inválido.", async () => {

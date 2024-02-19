@@ -28,7 +28,7 @@ para mais [Exemplos](./examples/),
 Buscar um pensamento usando o `search`
 
 ```js
-const { error, sucess } = await pensador.search({
+const { error, success } = await pensador.search({
 	query: "elon musk", //obrigatório
 	limit: 2, //opcional - padrão é 1
 });

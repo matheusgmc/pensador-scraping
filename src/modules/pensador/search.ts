@@ -10,7 +10,9 @@ export async function search(
 		if (!q || checkString(q)) {
 			throw new Error("essa query não é válido.");
 		}
-		const { data } = await router.get("/" + q.replace(/[ ]/gi, "_"));
+		const { data } = await router.get(
+			"/busca.php?q=" + q.replace(/[ ]/gi, "+")
+		);
 		return { html: data };
 	} catch (error: any) {
 		return { err: `${error.message} - query: ${q}` };
